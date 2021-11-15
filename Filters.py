@@ -46,7 +46,7 @@ class Filters:
 
     @staticmethod
     def gaussian(img, sigma): #Filter 2
-        return gaussian(img, sigma=sigma, multichannel=False)
+        return gaussian(color.rgb2gray(img), sigma=sigma, multichannel=False)
 
     @staticmethod
     def hessian(img, start, end, step): #Filter 3

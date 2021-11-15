@@ -17,18 +17,20 @@ class GUI:
         self.transformation_frame = LabelFrame(self.root, text='Transformation', padx=5, pady=5)  # Transformation Frame
         self.morphology_frame = LabelFrame(self.root, text='Morphology', padx=5, pady=5)  # Morphology Frame
         self.exposure_frame = LabelFrame(self.root, text='Exposure', padx=5, pady=5)  # Exposure Frame
+        self.histogram_frame = LabelFrame(self.root,  text='Histogram',  padx=5, pady=5)  # Histogram Frame
+        self.video_frame = LabelFrame(self.root,  text='Video?',  padx=5, pady=5)  # Video Frame
 
         # Buttons Filters
-        self.fl1 = Button(self.filter_frame, text='Median Filter', command=lambda: self.filter_button(fl.median))
-        self.fl2 = Button(self.filter_frame, text='Laplace', command=lambda: self.filter_button(fl.laplace))
-        self.fl3 = Button(self.filter_frame, text='apply filter', command=lambda: self.filter_button(fl.median))
-        self.fl4 = Button(self.filter_frame, text='apply filter', command=lambda: self.filter_button(fl.median))
-        self.fl5 = Button(self.filter_frame, text='apply filter', command=lambda: self.filter_button(fl.median))
-        self.fl6 = Button(self.filter_frame, text='apply filter', command=lambda: self.filter_button(fl.median))
-        self.fl7 = Button(self.filter_frame, text='apply filter', command=lambda: self.filter_button(fl.median))
-        self.fl8 = Button(self.filter_frame, text='apply filter', command=lambda: self.filter_button(fl.median))
-        self.fl9 = Button(self.filter_frame, text='apply filter', command=lambda: self.filter_button(fl.median))
-        self.fl10 = Button(self.filter_frame, text='apply filter', command=lambda: self.filter_button(fl.median))
+        self.fl1 = Button(self.filter_frame, text='Gabor', command=lambda: self.filter_button(fl.gabor, 30))
+        self.fl2 = Button(self.filter_frame, text='Gaussian', command=lambda: self.filter_button(fl.gaussian, .1))
+        self.fl3 = Button(self.filter_frame, text='Hessian', command=lambda: self.filter_button(fl.hessian, 1, 10, 2))
+        self.fl4 = Button(self.filter_frame, text='Laplace', command=lambda: self.filter_button(fl.laplace, 3))
+        self.fl5 = Button(self.filter_frame, text='Meijering', command=lambda: self.filter_button(fl.meijering, 1, 10, 2))
+        self.fl6 = Button(self.filter_frame, text='Farid', command=lambda: self.filter_button(fl.farid))
+        self.fl7 = Button(self.filter_frame, text='Prewitt', command=lambda: self.filter_button(fl.prewitt))
+        self.fl8 = Button(self.filter_frame, text='Hys_Thr', command=lambda: self.filter_button(fl.hys_thr))
+        self.fl9 = Button(self.filter_frame, text='Frangi', command=lambda: self.filter_button(fl.frangi))
+        self.fl10 = Button(self.filter_frame, text='Median', command=lambda: self.filter_button(fl.median))
 
         # Transformation Layout Start -----------------------------------------------------------
         # Buttons
@@ -95,6 +97,14 @@ class GUI:
         self.eb = Button(self.exposure_frame, text='Apply', command=lambda: self.exposure_button())
         self.el = Label(self.exposure_frame, text='%')
         # Exposure End ---------------------------------------------------------------------------------
+
+        # Histogram Start -----------------------------------------------------------------------
+        self.his = Button(self.histogram_frame, text='Show Histogram', command=lambda: self.histogram_button())
+        # Histogram End -------------------------------------------------------------------
+
+        # Video Start ---------------------------------------
+        self.vibut = Button(self.video_frame, text='VideoSomething', command=lambda: self.video_button())
+        # Video End ------------------------------------------
 
         self.undob = Button(self.root, text='Undo', command=self.undo_button, state=DISABLED)
 
@@ -179,10 +189,10 @@ class GUI:
 
         self.root.mainloop()
 
-    def filter_button(self, filter):
+    def filter_button(self, filter, *args):
         self.activate_undo_button()
         self.img_loc.grid_forget()
-        self.img.apply_effect(filter)
+        self.img.apply_effect(filter, *[i for i in args])
         self.imtemp = ImageTk.PhotoImage(Image.fromarray(self.img.get_image()))
         self.img_loc = Label(self.root, image=self.imtemp)
         self.img_loc.grid(row=0, column=4, rowspan=3)
@@ -194,6 +204,17 @@ class GUI:
         pass
 
     def exposure_button(self):
+        self.activate_undo_button()
+        self.img_loc.grid_forget()
+        self.img.apply_effect(fl.re_intese, self.es.get())
+        self.imtemp = ImageTk.PhotoImage(Image.fromarray(self.img.get_image()))
+        self.img_loc = Label(self.root, image=self.imtemp)
+        self.img_loc.grid(row=0, column=4, rowspan=3)
+
+    def histogram_button(self):
+        pass
+
+    def video_button(self):
         pass
 
     def undo_button(self):

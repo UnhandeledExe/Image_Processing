@@ -18,7 +18,7 @@ def main():
     # io.imshow(IMAGE.get_image())
     # io.show()
 
-    # IMAGE.apply_effect(fl.black_tophat)
+    # IMAGE.apply_effect(fl.gaussian, 10)
     # print(color.rgb2gray(IMAGE.get_image()))
     # IMAGE.show_image()
 
